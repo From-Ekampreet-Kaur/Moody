@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Moody – Smart Craving Suggestions</title>
+
+<style>
+  body {
+    font-family: Poppins, sans-serif;
+    background: #B8A3FF;
+    padding: 40px;
+    text-align: center;
+    color: #fff;
+  }
+
+  h2 { 
+    color: #fff; 
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .btn {
+    background: #DCC7FF;
+    border: none;
+    padding: 12px 25px;
+    margin: 10px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: .3s;
+    color: #2E2B33;
+    font-weight: 500;
+  }
+
+  .btn:hover {
+    background: #B8A3FF;
+    color: #fff;
+  }
+
+  .input-container {
+    margin-top: 30px;
+  }
+
+  input {
+    padding: 14px;
+    width: 70%;
+    max-width: 400px;
+    border: 3px solid #DCC7FF;
+    border-radius: 12px;
+    outline: none;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+
+  input:focus {
+    border-color: #fff;
+  }
+
+  #popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    width: 85%;
+    max-width: 380px;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    border-left: 8px solid #B8A3FF;
+    color: #2E2B33;
+    text-align: left;
+    z-index: 999;
+  }
+
+  #popup h3 {
+    margin-top: 0;
+    color: #6B5E7A;
+  }
+
+</style>
+</head>
+
+<body>
+
+<h2>What are you craving right now?</h2>
+
+<div class="input-container">
+  <h3 style="color:white;">
+    Tell us what you're craving:
+  </h3>
+  <input type="text" id="userCraving" placeholder="e.g. chocolate, burger, pizza, ice cream">
+  <br><br>
+  <button class="btn" onclick="getSuggestion()">Get Healthy Alternative</button>
+</div>
+
+<div id="popup">
+  <h3 id="popup-title"></h3>
+  <p id="popup-text"></p>
+  <button class="btn" onclick="closePopup()">Close</button>
+</div>
+
+<script>
+// COMPREHENSIVE SUGGESTION DATABASE
+const cravingSuggestions = [
+  // Chocolate & Sweets
+  { 
+    keywords:["chocolate","choco","dairy milk","silk","kitkat","milk chocolate","cadbury","snickers"],
+    suggestion:"Try 70% dark chocolate — richer taste, stabilizes mood, and healthier."
+  },
+  {
+    keywords:["icecream","ice cream","gelato","butterscotch","vanilla","strawberry"],
+    suggestion:"Try banana ice cream (frozen banana blended). Sweet, creamy & healthy."
+  },
+  {
+    keywords:["pastry","cake","muffin","brownie","cupcake","donut","doughnut"],
+    suggestion:"Try fruit yogurt bowl with honey — creamy and sweet without the sugar crash."
+  },
+  {
+    keywords:["jamun","gulab","barfi","halwa","mithai","ladoo","jalebi","rasgulla"],
+    suggestion:"Try dates with nuts or jaggery sweets — naturally sweet + gentle on digestion."
+  },
+  {
+    keywords:["candy","toffee","lollipop","gummy","sweet"],
+    suggestion:"Try frozen grapes or berries — naturally sweet, refreshing, and nutritious."
+  },
+  {
+    keywords:["cookie","biscuit","oreo"],
+    suggestion:"Try oatmeal cookies with dark chocolate chips — satisfying & healthier."
+  },
+
+  // Salty & Crunchy
+  {
+    keywords:["chips","lays","kurkure","nachos","cheetos","doritos","pringles"],
+    suggestion:"Try roasted makhana or air-popped popcorn — same crunch, way healthier."
+  },
+  {
+    keywords:["fries","french fries","fried potato","wedges","potato"],
+    suggestion:"Try baked sweet potato fries with herbs — crispy, flavorful, less oil."
+  },
+  {
+    keywords:["samosa","pakora","bhajiya","vada","bonda"],
+    suggestion:"Try baked samosa or air-fried snacks — same taste with less guilt."
+  },
+  {
+    keywords:["namkeen","mixture","sev","chivda"],
+    suggestion:"Try roasted nuts mix or spiced chickpeas — crunchy and protein-rich."
+  },
+
+  // Fast Food & Burgers
+  {
+    keywords:["burger","cheeseburger","zinger","mcdonalds","mcd","kfc"],
+    suggestion:"Try grilled chicken sandwich with chili flakes — spicy, filling & healthier."
+  },
+  {
+    keywords:["pizza","peri peri","dominos","margherita","cheese pizza"],
+    suggestion:"Try homemade roti pizza with veggies — same great taste, lighter & fresher."
+  },
+  {
+    keywords:["sandwich","subway","grilled sandwich"],
+    suggestion:"Try whole wheat sandwich with veggies and mint chutney — fresh & satisfying."
+  },
+  {
+    keywords:["hot dog","hotdog","frank"],
+    suggestion:"Try chicken sausage wrap with veggies — protein-packed and tasty."
+  },
+
+  // Asian Food
+  {
+    keywords:["noodles","ramen","hakka","chowmein","instant noodles"],
+    suggestion:"Try masala oats or wheat noodles with veggies — warm, comforting & healthier."
+  },
+  {
+    keywords:["momos","dumplings","tandoori momos","fried momos"],
+    suggestion:"Try steamed momos with spicy chutney — same flavor, less oil."
+  },
+  {
+    keywords:["maggi","maggie"],
+    suggestion:"Try oats masala or soupy vermicelli — warm, spicy, comforting substitute."
+  },
+  {
+    keywords:["fried rice","chinese","manchurian"],
+    suggestion:"Try brown rice with stir-fried veggies — same comfort, more nutrition."
+  },
+
+  // Carbs & Comfort Food
+  {
+    keywords:["bread","pav","bun","toast"],
+    suggestion:"Try whole wheat toast with peanut butter or avocado — carbs + healthy fats."
+  },
+  {
+    keywords:["pasta","macaroni","spaghetti","penne","alfredo"],
+    suggestion:"Try whole grain pasta with tomato sauce — same comfort with more nutrients."
+  },
+  {
+    keywords:["rice","biryani","pulao","fried rice"],
+    suggestion:"Try khichdi with ghee — cozy, grounding, gentle on stomach, perfect comfort food."
+  },
+  {
+    keywords:["paratha","roti","naan","kulcha"],
+    suggestion:"Try multigrain roti with veggies — filling, nutritious, and delicious."
+  },
+
+  // Beverages & Drinks
+  {
+    keywords:["soda","coke","pepsi","soft drink","cola","sprite","fizzy"],
+    suggestion:"Try sparkling water with lemon or coconut water — refreshing without sugar."
+  },
+  {
+    keywords:["coffee","latte","cappuccino","mocha"],
+    suggestion:"Try green tea or black coffee — energy boost without the crash."
+  },
+  {
+    keywords:["milkshake","shake","smoothie"],
+    suggestion:"Try banana smoothie with oats — creamy, filling, and nutritious."
+  },
+
+  // Spicy Food
+  {
+    keywords:["spicy","hot","chili","pepper","masala"],
+    suggestion:"Try spicy roasted chickpeas or chili-flakes toast — satisfies spice cravings healthily."
+  },
+
+  // General Junk Food
+  {
+    keywords:["junk","fast food","fried","oily"],
+    suggestion:"Try baked or air-fried versions — satisfy cravings with less oil and guilt."
+  }
+];
+
+function getSuggestion() {
+  let text = document.getElementById("userCraving").value.toLowerCase().trim();
+  
+  // Check if input is empty
+  if (!text) {
+    document.getElementById("popup-title").innerText = "Oops! 💜";
+    document.getElementById("popup-text").innerText = "Please tell us what you're craving first!";
+    document.getElementById("popup").style.display = "block";
+    return;
+  }
+
+  let result = "";
+  
+  // Search through all suggestions
+  for (let item of cravingSuggestions) {
+    for (let key of item.keywords) {
+      if (text.includes(key)) {
+        result = item.suggestion;
+        break;
+      }
+    }
+    if (result) break;
+  }
+
+  // General fallback if nothing matches
+  if (!result) {
+    result = "Try drinking water first and having a fruit. Sometimes cravings are just thirst or your body needing natural nutrients. 💧🍎";
+  }
+
+  // Show popup with suggestion
+  document.getElementById("popup-title").innerText = "Healthy Alternative 💜";
+  document.getElementById("popup-text").innerText = result;
+  document.getElementById("popup").style.display = "block";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+// Allow Enter key to submit
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("userCraving").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      getSuggestion();
+    }
+  });
+});
+</script>
+
+</body>
+</html>

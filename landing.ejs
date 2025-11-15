@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moody – Landing Page</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #F8DFF2; /* Soft pinkish landing bg */
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .section-title {
+      color: #2E2B33;
+      font-weight: 600;
+      font-size: 2rem;
+    }
+
+    .section-text {
+      color: #4b4b4b;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .img-box {
+      max-width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-custom {
+      background-color: #DCC7FF;
+      padding: 12px 25px;
+      border-radius: 25px;
+      border: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .btn-custom:hover {
+      background-color: #B8A3FF;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<!---------------------- SECTION 1 ---------------------->
+<div class="container py-5">
+  <div class="row align-items-center">
+
+    <!-- LEFT IMAGE -->
+    <div class="col-lg-6 col-md-6 col-12 mb-4">
+      <img src="/images/logo.png" 
+           class="img-fluid img-box" alt="Moody Logo">
+    </div>
+
+    <!-- RIGHT TEXT -->
+    <div class="col-lg-6 col-md-6 col-12">
+      <h2 class="section-title">Welcome to Moody 💜</h2>
+      <p class="section-text">
+        Moody is a soft, privacy-first emotional wellness app designed to help you understand 
+        your mood patterns during your menstrual cycle. It gives you calming suggestions, 
+        healthy craving swaps, and gentle insights without medical complications.
+      </p>
+
+      <button class="btn-custom mt-3" onclick="location.href='/signup'">Sign Up</button>
+      <button class="btn-custom mt-3" onclick="location.href='/login'">Log In</button>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!---------------------- SECTION 2 ---------------------->
+<div class="container py-5">
+  <div class="row align-items-center flex-column-reverse flex-lg-row">
+
+    <!-- LEFT TEXT -->
+    <div class="col-lg-6 col-md-6 col-12 mt-4">
+      <h2 class="section-title">Understanding Your 21–35 Day Cycle 🌙</h2>
+
+      <p class="section-text"><b>Menstrual Phase (Days 1–5)</b><br>
+        Your period begins. Hormones drop and you may feel tired, emotional, or crave comfort foods.
+      </p>
+
+      <p class="section-text"><b>Follicular Phase (Days 6–13)</b><br>
+        Energy rises, mood improves, and you start feeling lighter and more active.
+      </p>
+
+      <p class="section-text"><b>Ovulation (Day 14)</b><br>
+        You may feel confident, social, and energized. Hormones peak during this time.
+      </p>
+
+      <p class="section-text"><b>Luteal Phase (Days 15–28)</b><br>
+        PMS symptoms, cravings, mood swings, and fatigue might appear as hormones fluctuate.
+      </p>
+    </div>
+
+    <!-- RIGHT IMAGE -->
+    <div class="col-lg-6 col-md-6 col-12 mb-4">
+      <img src="/images/cycle.png"
+           class="img-fluid img-box" alt="Cycle Illustration">
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
